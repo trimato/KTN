@@ -75,8 +75,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
                 # Handling logout request
                 if request == 'logout':
-                    self.client = content
-                    if self.client in connectedClients and content == None:
+                    if self.client in names:
                         del connectedClients[self.connection]
                         self.login_flag = False
                     else:
