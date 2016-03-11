@@ -23,7 +23,7 @@ class MessageParser:
 
 
     def parse_error(self, payload):
-        print(payload['timestamp']+ "Error: "+ payload['content'])
+        print(payload['timestamp']+ "  "+ "Error: "+ payload['content'])
 
 
     def parse_info(self, payload):
