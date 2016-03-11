@@ -32,7 +32,8 @@ class Client:
 
         while True:
             message = raw_input("> ")
-            self.send_message(message)
+            msg = message.split()
+            self.create_request(msg[0], ''.join(msg[1:]))
 
 
     def disconnect(self):
@@ -88,3 +89,4 @@ if __name__ == '__main__':
     No alterations are necessary
     """
     client = Client('localhost', 9998)
+    

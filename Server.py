@@ -12,6 +12,7 @@ must be written here (e.g. a dictionary for connected clients)
 
 # Dictionary of connected clients [keys] = connection, [values] = name
 connectedClients = {}
+names = []
 
 # List of chat history
 history = []
@@ -55,6 +56,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
                     self.client = content
                     if self.client not in connectedClients:
                         connectedClients.setdefault(self.connection, []).append(self.client)
+                        names.append(self.client)
                         self.respond('info', "Login successful!")
                         self.login_flag = True
                         self.respond('history', history)
@@ -94,9 +96,9 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
                 # Handling names request
                 elif request == 'names':
-                    names = connectedClients.values()
-                    names = ','.join(names)
-                    self.respond('info', names)
+                    nameList = names
+                    nameList = ','.join(nameList)
+                    self.respond('info', nameList)
                 else:
                     pass
 
