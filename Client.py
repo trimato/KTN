@@ -9,7 +9,6 @@ class Client:
     """
     This is the chat client class
     """
-
     def __init__(self, host, server_port):
         """
         This method is run when creating a new Client object
@@ -33,7 +32,7 @@ class Client:
         while True:
             message = raw_input("> ")
             msg = message.split()
-            self.create_request(msg[0], ''.join(msg[1:]))
+            self.create_request(msg[0], ' '.join(msg[1:]))
 
 
     def disconnect(self):
@@ -89,4 +88,3 @@ if __name__ == '__main__':
     No alterations are necessary
     """
     client = Client('localhost', 9998)
-    
