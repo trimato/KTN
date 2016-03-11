@@ -57,7 +57,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
                         connectedClients.setdefault(self.connection, []).append(self.client)
                         self.respond('info', "Login successful!")
                         self.login_flag = True
-                        self.respond('info', history)
+                        self.respond('history', history)
                     else:
                         self.respond('error', 'Already logged in!')
 
@@ -90,7 +90,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
                 # Handling history request
                 elif request == 'history':
-                    self.respond('info', history)
+                    self.respond('history', history)
 
                 # Handling names request
                 elif request == 'names':
