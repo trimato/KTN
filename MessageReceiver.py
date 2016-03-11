@@ -3,6 +3,7 @@ from threading import Thread
 
 BUFFER_SIZE = 1024
 
+
 class MessageReceiver(Thread):
     """
     This is the message receiver class. The class inherits Thread, something that
@@ -16,17 +17,19 @@ class MessageReceiver(Thread):
         """
 
         # Flag to run thread as a deamon
+        super(MessageReceiver, self).__init__()
         self.daemon = True
 
         # TODO: Finish initialization of MessageReceiver
         self.client = client
         self.connection = connection
+        self.start()
 
     def run(self):
         # TODO: Make MessageReceiver receive and handle payloads
 
-        while 1:
-            data = self.conn.recv(BUFFER_SIZE)
-            if not data: 
-                break
+        while True:
+            data = self.connection.recv(BUFFER_SIZE)
+            if not data:
+                continue
             self.client.receive_message(data)

@@ -17,7 +17,7 @@ connectedClients = {}
 history = []
 
 # Regular expression allowed characters for names
-viableCharacters = re.compile("^[a-zA-Z0-9]$")
+viableCharacters = re.compile("^[a-zA-Z0-9]+$")
 
 class ClientHandler(SocketServer.BaseRequestHandler):
     """
@@ -40,20 +40,26 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         # Loop that listens for messages from the client
         while True:
             received_string = self.connection.recv(4096)
+            if not received_string:
+                continue
+            print("<-- [", self.ip, "]:", received_string) # TODO: REMOVE DEBUG
             received_string = json.loads(received_string)
             request = received_string['request']
             content = received_string['content']
 
             # Handling login request
-            if request == 'login' and content != None and self.isValidName(content):
-                self.client = content
-                if self.client not in connectedClients:
-                    connectedClients.setdefault(self.connection, []).append(self.client)
-                    self.respond('info', "Login successful!")
-                    self.login_flag = True
-                    self.respond('History', history)
+            if request == 'login' and content != None:
+                if not self.isValidName(content):
+                    self.respond('error', 'Invalid name!')
                 else:
-                    self.respond('error', 'Already logged in!')
+                    self.client = content
+                    if self.client not in connectedClients:
+                        connectedClients.setdefault(self.connection, []).append(self.client)
+                        self.respond('info', "Login successful!")
+                        self.login_flag = True
+                        self.respond('info', history)
+                    else:
+                        self.respond('error', 'Already logged in!')
 
             # Handling help request
             elif request == 'help':
@@ -84,13 +90,13 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
                 # Handling history request
                 elif request == 'history':
-                    self.respond('History', history)
+                    self.respond('info', history)
 
                 # Handling names request
                 elif request == 'names':
                     names = connectedClients.values()
                     names = ','.join(names)
-                    self.respond('names', names)
+                    self.respond('info', names)
                 else:
                     pass
 
@@ -109,6 +115,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         if response == 'message':
             history.append(response)
         self.connection.send(response)
+        print("--> [", self.ip, "]:", response) # TODO: REMOVE DEBUG
 
     def generateMessage(self, response, content):
         message = json.dumps(

@@ -1,6 +1,7 @@
 import json
 
-class MessageParser():
+
+class MessageParser:
     def __init__(self):
 
         self.possible_responses = {
@@ -21,17 +22,19 @@ class MessageParser():
             print("The server did not respond correctly, please try again.")
             # Response not valid
 
+
     def parse_error(self, payload):
         print(payload['timestamp'], "Error: ", payload['content'])
+
 
     def parse_info(self, payload):
         print(payload['timestamp'], "  ", payload['sender'], ":", "\t", payload['content'])
 
+
     def parse_message(self, payload):
         print(payload['timestamp'], "  ", payload['sender'], ":", "\t" , payload['content'])
+
 
     def parse_history(self, payload):
         for i in payload['content']:
             print(payload['sender'], ":", "\t", i)
-
-MessageParser()
